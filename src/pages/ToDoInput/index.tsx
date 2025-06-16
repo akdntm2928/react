@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
 import { useContext, useState } from 'react';
-import { Button } from '../button';
-import { Title } from '../Title';
-import { TextInput } from '../TextInput';
+import { Button } from '../../components/button';
+import { Title } from '../../components/Title';
+import { TextInput } from '../../components/TextInput';
 import { ToDoListContext } from '../../contexts/ToDoList';
-
+import { useNavigate } from 'react-router-dom';
+import { ShowToDoInputButton } from 'components/showToDoInputButton';
 const Container = styled.div`
   position: absolute;
-  top: 0;
+  top: 5vh;
   left: 0;
   bottom: 0;
   right: 0;
@@ -16,12 +17,7 @@ const Container = styled.div`
   justify-content: center;
 `
 const Background = styled.div`
- position: absolute;
- top: 0;
- left: 0;
- bottom: 0;
- right: 0;
- background-color: rgb(0 0 0 / 75%);
+
 `;
 const Contents = styled.div`
  display: flex;
@@ -39,20 +35,16 @@ const InputContainer = styled.div`
  justify-content: center;
 `;
 
-interface Props {
- readonly onClose: () => void;
-}
-
-export const ToDoInput = ({onClose}:Props) => {
+export const ToDoInput = () => {
     const { onInsert } = useContext(ToDoListContext);
     const [toDo, setToDo] = useState('');
-
+    const navigate = useNavigate();
 
     const onInsertToDo = () => {
         if (toDo === '') return;
         onInsert(toDo);
         setToDo('');
-        onClose();
+        navigate('/')
     }
 
     return (
@@ -65,6 +57,7 @@ export const ToDoInput = ({onClose}:Props) => {
                     <Button label="추가" color="#304FFE" onclick={onInsertToDo} />
                 </InputContainer>
             </Contents>
+            <ShowToDoInputButton show={true} onclick={() => navigate('/')}></ShowToDoInputButton>
         </Container>
     )
 }
